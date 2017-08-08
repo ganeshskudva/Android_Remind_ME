@@ -30,6 +30,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.gkudva.to_do_list.R;
 import com.example.gkudva.to_do_list.model.Info;
 import com.example.gkudva.to_do_list.service.NotifyReceiver;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
 
         try {
-            Thread.sleep(1500);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             //handle
         }
@@ -221,7 +222,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             contentValues.put("ToDoTaskPrority", RadioSelection);
                             contentValues.put("ToDoTaskStatus", "Incomplete");
                             contentValues.put("ToDoNotes", todoNotes.getText().toString());
-                            contentValues.put("ToDoDate", todoDate.getText().toString().substring(17));
+                            if (mUserHasReminder == true) {
+                                contentValues.put("ToDoDate", todoDate.getText().toString().substring(17));
+                            }
+                            else
+                            {
+                                contentValues.put("ToDoDate", "");
+                            }
+                            int color = 0;
+                            color = ColorGenerator.MATERIAL.getRandomColor();
+                            contentValues.put("ToDoColor", Integer.toString(color));
                             mysqlite = new SQLiteHelper(getApplicationContext());
                             Boolean b = mysqlite.insertInto(contentValues);
                             if (b) {
@@ -275,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 tddObj.setToDoTaskStatus(result.getString(3));
                 tddObj.setToDoNotes(result.getString(4));
                 tddObj.setToDoDate(result.getString(5));
+                tddObj.setToDoColor(result.getString(6));
                 tdd.add(tddObj);
             }
             adapter.notifyDataSetChanged();

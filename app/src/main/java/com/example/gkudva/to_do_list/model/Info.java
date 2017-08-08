@@ -10,6 +10,19 @@ public class Info {
     String ToDoTaskPrority;
     String ToDoTaskStatus;
     String ToDoNotes;
+    String ToDoColor;
+
+    public void setToDoColor(String toDoColor) {
+        ToDoColor = toDoColor;
+    }
+
+    public String getToDoColor() {
+
+        return ToDoColor;
+    }
+
+
+
 
     public void setToDoDate(String toDoDate) {
         ToDoDate = toDoDate;

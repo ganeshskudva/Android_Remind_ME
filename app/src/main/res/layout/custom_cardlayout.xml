@@ -53,6 +53,17 @@
                 android:layout_below="@+id/toDoTextDetails"
                 android:layout_alignLeft="@+id/toDoTextDetails"
                 android:layout_alignStart="@+id/toDoTextDetails" />
+            <TextView
+                android:id="@+id/toDoTextPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Movie Name"
+                android:textColor="@color/primary_text"
+                android:textSize="14dp"
+                android:layout_below="@+id/toDoTextDetails"
+                android:layout_alignParentRight="true"
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 

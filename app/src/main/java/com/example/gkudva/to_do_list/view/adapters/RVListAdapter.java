@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.gkudva.to_do_list.R;
 import com.example.gkudva.to_do_list.model.Info;
 import com.example.gkudva.to_do_list.utils.sqlite.SQLiteHelper;
@@ -72,16 +71,32 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
             holder.todoDetails.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
         String type = td.getToDoTaskPrority();
-        int color = 0;
-        color = ColorGenerator.MATERIAL.getRandomColor();
-        ((GradientDrawable) holder.proprityColor.getBackground()).setColor(color);
+        if (type.contains("High")) {
+            holder.todoPriority.setText("HIGH");
+            holder.todoPriority.setTextColor(Color.RED);
+        }
+        else if (type.contains("Normal"))
+        {
+            holder.todoPriority.setText("NORMAL");
+            holder.todoPriority.setTextColor(Color.GREEN);
+        }
+        else
+        {
+            holder.todoPriority.setText("LOW");
+            holder.todoPriority.setTextColor(Color.LTGRAY);
+        }
+
+
+
+        ((GradientDrawable) holder.proprityColor.getBackground()).setColor(Integer.parseInt(td.getToDoColor()));
         TextDrawable myDrawable = TextDrawable.builder().beginConfig()
-                .textColor(Color.WHITE)
-                .useFont(Typeface.DEFAULT)
-                .toUpperCase()
-                .endConfig()
-                .buildRound(td.getToDoTaskDetails().substring(0,1),color);
+                    .textColor(Color.WHITE)
+                    .useFont(Typeface.DEFAULT)
+                    .toUpperCase()
+                    .endConfig()
+                    .buildRound(td.getToDoTaskDetails().substring(0, 1), Integer.parseInt(td.getToDoColor()));
         holder.proprityColor.setImageDrawable(myDrawable);
+
     }
 
 
@@ -91,7 +106,7 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
     }
 
     public class ToDoListViewHolder extends RecyclerView.ViewHolder {
-        TextView todoDetails, todoNotes;
+        TextView todoDetails, todoNotes, todoPriority;
         ImageButton proprityColor;
         ImageView edit, deleteButton;
         Info Info;
@@ -101,6 +116,7 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
             final Context mContext = context;
             todoDetails = (TextView) view.findViewById(R.id.toDoTextDetails);
             todoNotes = (TextView) view.findViewById(R.id.toDoTextNotes);
+            todoPriority = (TextView) view.findViewById(R.id.toDoTextPriority);
             proprityColor = (ImageButton) view.findViewById(R.id.typeCircle);
 
             view.setOnClickListener(new View.OnClickListener() {
