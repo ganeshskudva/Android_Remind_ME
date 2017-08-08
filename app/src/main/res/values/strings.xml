@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Remind Me</string>
+    <string name="remind_me">Remind Me</string>
+    <string name="choose_date">Date</string>
+    <string name="choose_time">Time</string>
+    <string name="remind_date_and_time">Reminder set for %1$s, %2$s %3$s</string>
+    <string name="date_error_check_again">The date you entered is in the past.</string>
+    <string-array name="time">
+        <item>None</item>
+        <item>Minutes</item>
+        <item>Hours</item>
+        <item>Days</item>
+    </string-array>
+</resources>
