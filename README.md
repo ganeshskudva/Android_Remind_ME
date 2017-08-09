@@ -41,7 +41,12 @@ As part of your pre-work submission, please reflect on the app and answer the fo
 
 **Question 2:** "Take a moment to reflect on the `ArrayAdapter` used in your pre-work. How would you describe an adapter in this context and what is its function in Android? Why do you think the adapter is important? Explain the purpose of the `convertView` in the `getView` method of the `ArrayAdapter`."
 
-**Answer:** 
+**Answer:** Adapters in Android act as a bridge between the UI components and the data source that fills the data into the UI components.They are a link between a set of data and **AdapterView** which displays data.
+Let’s assume you want to display a list in your Android app. For this you will use the ListView provided by Android. ListViews don’t actually contain any data themselves. It’s just a UI element without data in it. You can populate your ListViews by using an Android adapter.
+Adapter is an interface whose implementations provide data and control the display of that data. ListViews own adapters that completely control the ListView’s display. So adapters control the content displayed in the list as well as how to display it.
+
+Android's ListView uses an Adapter to fill itself with Views. When the ListView is shown, it starts calling `getView` to populate itself. When the user scrolls a new view should be created, so for performance the ListView sends the Adapter an old view that it's not used any more in the convertView param.
+`convertView` is used strictly to increase the performance of your Adapter. When a ListView uses an Adapter to fill its rows with Views, the adapter populates each list item with a View object by calling `getView()` on each row. The Adapter uses the convertView as a way of recycling old View objects that are no longer being used. In this way, the ListView can send the Adapter old, "recycled" view objects that are no longer being displayed instead of instantiating an entirely new object each time the Adapter wants to display a new list item. This is the purpose of the `convertView` parameter.
 
 ## Notes
 
