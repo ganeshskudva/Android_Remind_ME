@@ -1,12 +1,9 @@
 package com.example.gkudva.to_do_list.view.activities;
 
 import android.animation.Animator;
-import android.app.AlarmManager;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,7 +30,6 @@ import android.widget.Toast;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.example.gkudva.to_do_list.R;
 import com.example.gkudva.to_do_list.model.Info;
-import com.example.gkudva.to_do_list.service.NotifyReceiver;
 import com.example.gkudva.to_do_list.utils.sqlite.SQLiteHelper;
 import com.example.gkudva.to_do_list.view.adapters.RVListAdapter;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -60,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     SwitchCompat mToDoDateSwitch;
     TextView mReminderTextView;
     Date mUserReminderDate;
-    boolean mUserHasReminder;
+    boolean mUserHasReminder, timeSet;
     EditText mDateEditText;
     EditText mTimeEditText;
 
@@ -259,20 +255,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
 
     }
-    public void scheduleNotification(long time, String TaskTitle, String TaskPrority) {
-        Calendar Calendar_Object = Calendar.getInstance();
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        final int _id = (int) System.currentTimeMillis();
-        Intent myIntent = new Intent(MainActivity.this, NotifyReceiver.class);
-        myIntent.putExtra("TaskTitle", TaskTitle);
-        myIntent.putExtra("TaskPrority",TaskPrority);
-        myIntent.putExtra("id",_id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,
-                _id, myIntent, PendingIntent.FLAG_ONE_SHOT);
-        alarmManager.set(AlarmManager.RTC, Calendar_Object.getTimeInMillis() + time,
-                pendingIntent);
 
-    }
     public void updateCardView() {
         swipeRefreshLayout.setRefreshing(true);
         mysqlite = new SQLiteHelper(getApplicationContext());
@@ -327,13 +310,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             else{
                 timeString = df.format("h:mm", date).toString();
                 amPmString = df.format("a", date).toString();
-                if (amPmString.contains("AM"))
-                {
-                    amPmString = "PM";
-                }
-                else
-                {
-                    amPmString = "AM";
+                if (!timeSet) {
+                    if (amPmString.contains("AM")) {
+                        amPmString = "PM";
+                    } else {
+                        amPmString = "AM";
+                    }
                 }
             }
             String finalString = String.format(getResources().getString(R.string.remind_date_and_time), dateString, timeString, amPmString);
@@ -440,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         calendar.set(year, month, day, hour, minute);
         mUserReminderDate = calendar.getTime();
+        timeSet = false;
         setReminderTextView();
 
         setDateEditText();
@@ -457,6 +440,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         calendar.set(year, month, day, hour, minute, 0);
         mUserReminderDate = calendar.getTime();
 
+        timeSet = true;
         setReminderTextView();
 
         setTimeEditText();
@@ -492,7 +476,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
         dateFormat = new SimpleDateFormat(dtFormat);
         dateFormat.setTimeZone(TimeZone.getDefault());
-        mTimeEditText.setText(dateFormat.format(mUserReminderDate));
+        String timeStr = dateFormat.format(mUserReminderDate);
+
+        mTimeEditText.setText(timeStr);
     }
 
 
