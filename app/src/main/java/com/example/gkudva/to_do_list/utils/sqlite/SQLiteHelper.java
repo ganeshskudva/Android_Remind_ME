@@ -23,6 +23,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static final String Col_5 = "ToDoNotes";
     public static final String Col_6 = "ToDoDate";
     public static final String Col_7 = "ToDoColor";
+    public static final String Col_8 = "ToDoStatus";
 
     // Create DB to store To Do Tasks
     public SQLiteHelper(Context context) {
@@ -33,7 +34,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     // Create Table
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableQuery = "create table if not exists " + TableName + " ( ToDoID INTEGER PRIMARY KEY AUTOINCREMENT, ToDoTaskDetails TEXT, ToDoTaskPrority TEXT, ToDoTaskStatus TEXT, ToDoNotes TEXT, ToDoDate TEXT, ToDoColor TEXT )";
+        String createTableQuery = "create table if not exists " + TableName + " ( ToDoID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                                              "ToDoTaskDetails TEXT, " +
+                                                                              "ToDoTaskPrority TEXT, " +
+                                                                              "ToDoTaskStatus TEXT, " +
+                                                                              "ToDoNotes TEXT, " +
+                                                                              "ToDoDate TEXT, " +
+                                                                              "ToDoColor TEXT, " +
+                                                                              "ToDoStatus TEXT )";
         db.execSQL(createTableQuery);
     }
 
@@ -80,6 +88,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 + Col_6 + "='" + td.getToDoDate()
                 + "', "
                 + Col_7 + "='" + td.getToDoColor()
+                + "', "
+                + Col_8 + "='" + td.getToDoTaskStatus()
                 + "' WHERE " + Col_1 + "='" + td.getToDoID() + "'";
         Cursor results = db.rawQuery(query, null);
         return results;

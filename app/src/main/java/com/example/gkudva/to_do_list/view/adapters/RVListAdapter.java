@@ -35,6 +35,8 @@ import com.example.gkudva.to_do_list.utils.sqlite.SQLiteHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.gkudva.to_do_list.R.id.newToDoDateTimeReminderTextView;
+
 
 /**
  * Created by deepmetha on 8/28/16.
@@ -42,6 +44,7 @@ import java.util.List;
 public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListViewHolder> {
     List<Info> InfoArrayList = new ArrayList<Info>();
     Context context;
+    final static String EMPTY_STRNG = "";
 
     public RVListAdapter(String details) {
         Info Info = new Info();
@@ -65,9 +68,15 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
     public void onBindViewHolder(ToDoListViewHolder holder, final int position) {
         final Info td = InfoArrayList.get(position);
         holder.todoDetails.setText(td.getToDoTaskDetails());
-        holder.todoNotes.setText(td.getToDoDate());
+        if (td.getToDoDate() != null) {
+            holder.todoNotes.setText(td.getToDoDate());
+        }
+        else
+        {
+            holder.todoNotes.setText("");
+        }
         String tdStatus = td.getToDoTaskStatus();
-        if (tdStatus.matches("Complete")) {
+        if (tdStatus != null && tdStatus.matches("Complete")) {
             holder.todoDetails.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
         String type = td.getToDoTaskPrority();
@@ -87,15 +96,16 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
         }
 
 
-
-        ((GradientDrawable) holder.proprityColor.getBackground()).setColor(Integer.parseInt(td.getToDoColor()));
-        TextDrawable myDrawable = TextDrawable.builder().beginConfig()
+        if (td.getToDoColor() != null) {
+            ((GradientDrawable) holder.proprityColor.getBackground()).setColor(Integer.parseInt(td.getToDoColor()));
+            TextDrawable myDrawable = TextDrawable.builder().beginConfig()
                     .textColor(Color.WHITE)
                     .useFont(Typeface.DEFAULT)
                     .toUpperCase()
                     .endConfig()
                     .buildRound(td.getToDoTaskDetails().substring(0, 1), Integer.parseInt(td.getToDoColor()));
-        holder.proprityColor.setImageDrawable(myDrawable);
+            holder.proprityColor.setImageDrawable(myDrawable);
+        }
 
     }
 
@@ -142,7 +152,7 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
                     } else {
                         rbHigh.setChecked(true);
                     }
-                    if (td.getToDoTaskStatus().matches("Complete")) {
+                    if (td.getToDoTaskStatus() != null && td.getToDoTaskStatus().matches("Complete")) {
                         cb.setChecked(true);
                     }
                     todoText.setText(td.getToDoTaskDetails());
@@ -187,7 +197,7 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
                             EditText todoText = (EditText) dialog.findViewById(R.id.input_task_desc);
                             EditText todoNote = (EditText) dialog.findViewById(R.id.input_task_notes);
                             CheckBox cb = (CheckBox) dialog.findViewById(R.id.checkbox);
-                            TextView todoDate = (TextView) dialog.findViewById(R.id.newToDoDateTimeReminderTextView);
+                            TextView todoDate = (TextView) dialog.findViewById(newToDoDateTimeReminderTextView);
                             if (todoText.getText().length() >= 2) {
                                 RadioGroup proritySelection = (RadioGroup) dialog.findViewById(R.id.toDoRG);
                                 String RadioSelection = new String();
@@ -203,7 +213,7 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
                                 updateTd.setToDoTaskDetails(todoText.getText().toString());
                                 updateTd.setToDoTaskPrority(RadioSelection);
                                 updateTd.setToDoNotes(todoNote.getText().toString());
-                                updateTd.setToDoDate(todoDate.getText().toString());
+                                updateTd.setToDoDate(EMPTY_STRNG);
                                 if (cb.isChecked()) {
                                     updateTd.setToDoTaskStatus("Complete");
                                 } else {

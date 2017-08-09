@@ -67,13 +67,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             //handle
         }
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_s);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         addTask = (FloatingActionButton) findViewById(R.id.imageButton);
@@ -251,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
         });
+
     }
     public void scheduleNotification(long time, String TaskTitle, String TaskPrority) {
         Calendar Calendar_Object = Calendar.getInstance();
@@ -286,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 tddObj.setToDoNotes(result.getString(4));
                 tddObj.setToDoDate(result.getString(5));
                 tddObj.setToDoColor(result.getString(6));
+                tddObj.setToDoTaskStatus(result.getString(7));
                 tdd.add(tddObj);
             }
             adapter.notifyDataSetChanged();
@@ -444,7 +448,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        Log.d("OskarSchindler", "Time set: "+hour);
         calendar.set(year, month, day, hour, minute, 0);
         mUserReminderDate = calendar.getTime();
 

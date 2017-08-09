@@ -5,12 +5,15 @@ package com.example.gkudva.to_do_list.model;
  */
 
 public class Info {
-    int ToDoID;
-    String ToDoTaskDetails;
-    String ToDoTaskPrority;
-    String ToDoTaskStatus;
-    String ToDoNotes;
-    String ToDoColor;
+    private int ToDoID;
+    private String ToDoTaskDetails;
+    private String ToDoTaskPrority;
+    private String ToDoTaskStatus;
+    private String ToDoNotes;
+    private String ToDoColor;
+
+    static final String DEFAULT_COLOR = "-5319295";
+    static final String DEFAULT_STATUS = "Incomplete";
 
     public void setToDoColor(String toDoColor) {
         ToDoColor = toDoColor;
@@ -61,6 +64,11 @@ public class Info {
 
     public String getToDoTaskStatus() {
         return ToDoTaskStatus;
+    }
+
+    public Info() {
+        ToDoTaskStatus = DEFAULT_STATUS;
+        ToDoColor = DEFAULT_COLOR;
     }
 
     public void setToDoTaskStatus(String toDoTaskStatus) {
