@@ -79,6 +79,10 @@ public class RVListAdapter extends RecyclerView.Adapter<RVListAdapter.ToDoListVi
         if (tdStatus != null && tdStatus.matches("Complete")) {
             holder.todoDetails.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
+        else
+        {
+            holder.todoDetails.setPaintFlags(holder.todoDetails.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        }
         String type = td.getToDoTaskPrority();
         if (type.contains("High")) {
             holder.todoPriority.setText("HIGH");

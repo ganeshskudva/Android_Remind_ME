@@ -40,9 +40,11 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
     FloatingActionButton addTask;
@@ -99,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 dialog.setContentView(R.layout.custom_dailog);
                 dialog.show();
 
+                mUserHasReminder = false;
+                mUserReminderDate = null;
                 mContainerLayout = (LinearLayout)dialog.findViewById(R.id.todoReminderAndDateContainerLayout);
                 mUserDateSpinnerContainingLinearLayout = (LinearLayout)dialog.findViewById(R.id.toDoEnterDateLinearLayout);
                 mToDoDateSwitch = (SwitchCompat)dialog.findViewById(R.id.toDoHasDateSwitchCompat);
@@ -308,7 +312,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if(mUserReminderDate!=null){
             mReminderTextView.setVisibility(View.VISIBLE);
             if(mUserReminderDate.before(new Date())){
-                //Log.d("OskarSchindler", "DATE is "+mUserReminderDate);
                 mReminderTextView.setText(this.getString(R.string.date_error_check_again));
                 mReminderTextView.setTextColor(Color.RED);
                 return;
@@ -324,6 +327,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             else{
                 timeString = df.format("h:mm", date).toString();
                 amPmString = df.format("a", date).toString();
+                if (amPmString.contains("AM"))
+                {
+                    amPmString = "PM";
+                }
+                else
+                {
+                    amPmString = "AM";
+                }
             }
             String finalString = String.format(getResources().getString(R.string.remind_date_and_time), dateString, timeString, amPmString);
             mReminderTextView.setTextColor(getResources().getColor(R.color.secondary_text));
@@ -411,7 +422,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         reminderCalendar.set(year, month, day);
 
         if(reminderCalendar.before(calendar)){
-            //    Toast.makeText(this, "My time-machine is a bit rusty", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -431,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         calendar.set(year, month, day, hour, minute);
         mUserReminderDate = calendar.getTime();
         setReminderTextView();
-//        setDateAndTimeEditText();
+
         setDateEditText();
     }
 
@@ -441,10 +451,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             calendar.setTime(mUserReminderDate);
         }
 
-//        if(DateFormat.is24HourFormat(this) && hour == 0){
-//            //done for 24h time
-//                hour = 24;
-//        }
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -452,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mUserReminderDate = calendar.getTime();
 
         setReminderTextView();
-//        setDateAndTimeEditText();
+
         setTimeEditText();
     }
 
@@ -467,22 +473,26 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     public void  setDateEditText(){
-        android.text.format.DateFormat df = new android.text.format.DateFormat();
-        String dateFormat = "d MMM, yyyy";
-        mDateEditText.setText(df.format(dateFormat, mUserReminderDate).toString());
+        String dtFormat = "yyyy-MM-dd hh:mm:ss aa";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dtFormat);
+        dateFormat.setTimeZone(TimeZone.getDefault());
+        String date = dateFormat.format(mUserReminderDate);
+        mDateEditText.setText(date.substring(0, 10));
     }
 
     public void  setTimeEditText(){
-        android.text.format.DateFormat df = new android.text.format.DateFormat();
-        String dateFormat;
+        SimpleDateFormat dateFormat;
+        String dtFormat;
         if(DateFormat.is24HourFormat(this)){
-            dateFormat = "k:mm";
+            dtFormat = "k:mm";
         }
         else{
-            dateFormat = "h:mm a";
+            dtFormat = "h:mm a";
 
         }
-        mTimeEditText.setText(df.format(dateFormat, mUserReminderDate).toString());
+        dateFormat = new SimpleDateFormat(dtFormat);
+        dateFormat.setTimeZone(TimeZone.getDefault());
+        mTimeEditText.setText(dateFormat.format(mUserReminderDate));
     }
 
 
