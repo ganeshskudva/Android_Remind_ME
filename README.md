@@ -29,7 +29,7 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-[Remind ME](RemindMe.gif)
+![Remind ME](RemindMe.gif)
 
 ## Project Analysis
 
