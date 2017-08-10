@@ -25,7 +25,8 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [x] Option to mark a specific task as completed
+* [x] Animations in Dialog Fragment, to show time and date
+* [x] Added splash screen
 
 ## Video Walkthrough
 
@@ -51,8 +52,8 @@ Android's ListView uses an Adapter to fill itself with Views. When the ListView 
 ## Notes
 
 Describe any challenges encountered while building the app.
-* Faced some issue while interacting with SQLite
-* Faced some issues with layout creation
+* Faced some issue while interacting with SQLite. The way I created the table was wrong, resulting in improper/junk values being fetched from SQLite.
+* Faced issues with Dialog Fragment, specifically while performing animations to display option for date and time. 
 
 ## License
 
